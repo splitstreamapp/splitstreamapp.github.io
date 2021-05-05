@@ -18,7 +18,7 @@
     for (var i = 0; i < plataforma.length; i++) {
 
         if (plataforma[i] == "t") {
-            $('<div id="stream-'+canal[i]+'" class="child"><iframe src="https://player.twitch.tv/?channel=' + canal[i] + '&parent=www.splitstreamapp.com" height="100%" width="100%" frameborder="0" allowfullscreen="false"></iframe></div>').appendTo("#parent");
+            $('<div id="stream-'+canal[i]+'" class="child"><iframe src="https://player.twitch.tv/?channel=' + canal[i] + '&parent=splitstreamapp.github.io" height="100%" width="100%" frameborder="0" allowfullscreen="false"></iframe></div>').appendTo("#parent");
         } else if (plataforma[i] == "f") {
             $('<div id="stream-'+canal[i]+'" class="child"><iframe src="https://www.facebook.com/plugins/video.php?href=https://www.facebook.com/' + canal[i] + '/live"          height="100%" width="100%" frameborder="0" allowfullscreen="false"></iframe></div>').appendTo("#parent");
         }
