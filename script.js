@@ -1,7 +1,7 @@
 
     /*******Carga Stream***********/
 
-    /*var plataforma = [];
+    var plataforma = [];
     var canal = [];
 
     var arrayAsAString = Android.getJavaArrayAsAString();
@@ -24,7 +24,7 @@
         }
         $('<li style="align-items:center;"><label  style="border-radius: 3px; padding: 3px; margin-right: 5px; background-color:#016fb9; color: white;">'+ canal[i] +'</label><div class="fab-icon-holder"><i class="fa fa-refresh" onclick="updateDiv(\'stream-' + canal[i] + '\')"></i></div></li>').appendTo("#options");
 
-    }*/
+    }
 
     /*******Cambia Vista***********/
     var childDiv = document.getElementsByClassName('child');
