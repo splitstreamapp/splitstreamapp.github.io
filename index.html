@@ -1,30 +1,380 @@
-<!DOCTYPE html>
 <html>
-    <header>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Split Stream</title>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-        <link rel="stylesheet" href="stylee.css" />
-    </header>
-    <body>
-        <div id="parent">
 
-        </div>
-        <div class="fab-container">
-            <div class="fab fab-icon-holder float">
-                <i class="fa fa-bars"></i>
-            </div>
-            <ul id="options" class="fab-options" style="display: none;">
-                <li style="align-items:center;">
-                    <label id="lblView"  style="border-radius: 3px; padding: 2px; margin-right: 5px; background-color:#d23f31;; color: white;">Grid</label>
-                    <div class="fab-icon-holder" style="background-color: #d23f31;">
-                        <i class="fa fa-th-large" onclick="changemode(this)"></i>
-                    </div>
-                </li>
-            </ul>
-        </div> 
-        <script src="script.js"></script>
-    </body>
+
+
+<head>
+
+    <meta charset="utf-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+    <script src="https://code.jquery.com/mobile/1.5.0-alpha.1/jquery.mobile-1.5.0-alpha.1.min.js"></script>
+
+    <link rel="stylesheet" href="style.css" />
+
+    <title></title>
+
+</head>
+
+
+
+<body>
+
+
+
+    <div id="sortTrue" class="row">        
+
+
+
+    </div>
+
+
+
+    <div id="btnContainer">
+
+        <button id="fbtn" class="btn float fa fa-th-large" onclick="changeView(this)"></button>
+
+    </div>
+
+
+
+    <script type="text/javascript">
+
+        /*Carga streams*/
+
+
+
+        var plataforma = [];
+
+        var canal = [];
+
+
+
+        var arrayAsAString = Android.getJavaArrayAsAString();
+
+        var plat = Android.getPlataformArrayAsAString();
+
+        realJsString = arrayAsAString + "";
+
+        arrayFromJava = realJsString.split("|");
+
+        realPlatform = plat + "";
+
+        platFromJava = realPlatform.split("|");
+
+        for (var i = 0; i < arrayFromJava.length; i++) {
+
+            canal[i] = arrayFromJava[i];
+
+            plataforma[i] = platFromJava[i];
+
+        }
+
+
+
+        for (var i = 0; i < plataforma.length; i++) {
+
+
+
+            if (plataforma[i] == "t") {
+
+                $('<div class="column"><div id="stream-' + canal[i] + '"><div class="show"><div class="fab-zone"><div class="fab-container"><div class="fab fab-icon-holder"><i class="fa fa-cog"></i></div><ul class="fab-options"><li><div class="fab-icon-holder"><i class="fa fa-refresh" onclick="updateDiv(\'stream-' + canal[i] + '\')"></i></div></li><li><div class="fab-icon-holder btn-up"><i class="fa fa-arrow-up btn-move-up"></i></div></li><li><div class="fab-icon-holder btn-down"><i class="fa fa-arrow-down btn-move-down"></i></div></li></ul></div> </div><iframe width="100%" height="100%" src="https://player.twitch.tv/?channel=' + canal[i] + '&parent=splitstreamapp.github.io"></iframe></div></div></div>').appendTo("#sortTrue");
+
+            } else if (plataforma[i] == "m") {
+
+                $('<div class="column"><div id="stream-' + canal[i] + '"><div class="show"><div class="fab-zone"><div class="fab-container"><div class="fab fab-icon-holder"><i class="fa fa-cog"></i></div><ul class="fab-options"><li><div class="fab-icon-holder"><i class="fa fa-refresh" onclick="updateDiv(\'stream-' + canal[i] + '\')"></i></div></li><li><div class="fab-icon-holder btn-up"><i class="fa fa-arrow-up btn-move-up"></i></div></li><li><div class="fab-icon-holder btn-down"><i class="fa fa-arrow-down btn-move-down"></i></div></li></ul></div> </div><iframe src="https://mixer.com/embed/player/' + canal[i] + '" height="100%" width="100%" frameborder="0" allowfullscreen="false"></iframe></div></div></div>').appendTo("#sortTrue");
+
+            }
+
+
+
+        }
+
+
+
+    </script>
+
+
+
+
+
+    <script type="text/javascript">
+
+        function showAndroidToast(toast) {
+
+            Android.showToast(toast);
+
+        }
+
+
+
+
+
+        function loadOptions() {
+
+            //cambia posicion
+
+            $('i').click(
+
+                function(e) {
+
+                    e.preventDefault();
+
+                    var parent = $(this).closest('.column');
+
+                    if ($(this).hasClass('btn-move-up')) {
+
+                        parent.insertBefore(parent.prev('.column'));
+
+                    } else if ($(this).hasClass('btn-move-down')) {
+
+                        parent.insertAfter(parent.next('.column'));
+
+                    }
+
+                    if (!modeList) {
+
+                        gridView();
+
+                    }
+
+                });
+
+            $(function() {
+
+                setTimeout(function() {
+
+                    $(".fab-container").fadeOut(1000);
+
+                }, 10000)
+
+
+
+            })
+
+            $(".fab-zone").click(function() {
+
+
+
+                $(".fab-container").fadeIn(800);
+
+
+
+                setTimeout(function() {
+
+                    $(".fab-container").fadeOut(1000);
+
+                }, 10000)
+
+
+
+            });
+
+        }
+
+
+
+        $(document).ready(function() {
+
+            loadOptions();
+
+        });
+
+
+
+    </script>
+
+    <script type="text/javascript">
+
+        //update stream
+
+        function updateDiv(idStream) {
+
+            document.getElementById(idStream).innerHTML = document.getElementById(idStream).innerHTML;
+
+            loadOptions();
+
+        }
+
+
+
+        var modeList = true;
+
+
+
+        // Get the elements with class="column" and class="mask"
+
+        var elements = document.getElementsByClassName("column");
+
+        var menuTop = document.getElementsByClassName("mask");
+
+
+
+        // Declare a loop variable
+
+        var i;
+
+
+
+        // Grid View
+
+        function gridView() {
+
+
+
+            for (i = 0; i < elements.length; i++) {
+
+                if (elements.length % 2 == 0) {
+
+                    elements[i].style.width = "50%";
+
+                    elements[i].style.height = "100%";
+
+                } else {
+
+                    if (i + 1 == elements.length) {
+
+                        elements[i].style.width = "100%";
+
+                        elements[i].style.height = "100%";
+
+                    } else {
+
+                        elements[i].style.width = "50%";
+
+                        elements[i].style.height = "100%";
+
+                    }
+
+                }
+
+            }
+
+        }
+
+
+
+        // List View
+
+        function listView() {
+
+            $(window).orientationchange();
+
+
+
+        }
+
+
+
+        //change view mode
+
+        function changeView(button) {
+
+
+
+            var floatbtn = document.getElementById("fbtn");
+
+
+
+            var className = button.getAttribute("class");
+
+
+
+
+
+            if (className == "btn float fa fa-th-large ui-button ui-shadow ui-corner-all ui-widget ui-button-inherit") {
+
+                button.className = "btn float fa fa-th-list";
+
+                modeList = false;
+
+                gridView();
+
+            } else {
+
+                button.className = "btn float fa fa-th-large ui-button ui-shadow ui-corner-all ui-widget ui-button-inherit";
+
+                modeList = true;
+
+                listView();
+
+            }
+
+        }
+
+
+
+    </script>
+
+
+
+    <script type="text/javascript">
+
+        //Screen Orientation
+
+        $(window).on("orientationchange", function(event) {
+
+            var floatbtn = document.getElementById("fbtn");
+
+            var divs = document.getElementsByClassName("column");
+
+            var menuTop = document.getElementsByClassName("mask");
+
+
+
+            if (event.orientation == "portrait") {
+
+                floatbtn.style.visibility = "hidden";
+
+
+
+                for (i = 0; i <= divs.length; i++) {
+
+
+
+                    divs[i].style.width = "100%";
+
+                    divs[i].style.height = "50%";
+
+                }
+
+            } else if (event.orientation == "landscape") {
+
+                floatbtn.style.visibility = "visible";
+
+                for (i = 0; i <= divs.length; i++) {
+
+                    divs[i].style.width = "100%";
+
+                    divs[i].style.height = "100%";
+
+                }
+
+
+
+            }
+
+
+
+        });
+
+
+
+        $(window).orientationchange();
+
+
+
+    </script>
+
+
+
+</body>
+
+
+
 </html>
+
